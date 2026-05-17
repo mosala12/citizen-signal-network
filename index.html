@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizen Signal Network — Lesotho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0D1B2A;--ink-light:#2A3F55;--clay:#C94F3A;--clay-dim:#E8705C;--gold:#D4A843;--sage:#2D7A5E;--sage-dim:#3FA07D;--sky:#1B6CA8;--sky-dim:#3A8FD4;--cream:#F9F5EE;--paper:#FFFFFF;--border:rgba(13,27,42,.10);--shadow:0 4px 32px rgba(13,27,42,.12);--shadow-lg:0 12px 64px rgba(13,27,42,.18);--radius:12px;--radius-lg:20px;--font-display:'Playfair Display',Georgia,serif;--font-body:'DM Sans',sans-serif;--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--cream);color:var(--ink);overflow-x:hidden}
+button{cursor:pointer;font-family:var(--font-body)}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{background:var(--ink);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
+.sidebar-brand{padding:28px 24px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-mark{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.brand-icon{width:36px;height:36px;background:var(--clay);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-name{font-family:var(--font-display);font-size:15px;font-weight:700;line-height:1.2;color:#fff}
+.brand-tagline{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;padding-left:46px}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto}
+.nav-section-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:16px 24px 6px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 24px;font-size:14px;color:rgba(255,255,255,.6);border:none;background:none;width:100%;text-align:left;transition:all .15s;cursor:pointer;position:relative}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-item.active{color:#fff;background:rgba(201,79,58,.18)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--clay);border-radius:0 2px 2px 0}
+.nav-icon{width:18px;text-align:center;font-size:16px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--clay);color:#fff;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px}
+.sidebar-footer{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(255,255,255,.3)}
+.offline-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(45,122,94,.25);color:#6DCFAF;font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;margin-bottom:8px}
+.offline-dot{width:6px;height:6px;background:#6DCFAF;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.main{overflow-y:auto}
+.topbar{background:var(--paper);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.page-title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--ink)}
+.language-toggle{display:flex;gap:2px;background:var(--cream);border-radius:8px;padding:3px;border:1px solid var(--border)}
+.lang-btn{padding:4px 10px;border:none;border-radius:6px;font-size:12px;font-weight:500;background:transparent;color:var(--ink-light);transition:all .15s}
+.lang-btn.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.notif-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:10px;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:16px;position:relative}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--clay);border-radius:50%;border:1.5px solid #fff}
+.user-pill{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border:1px solid var(--border);border-radius:40px;background:var(--paper);font-size:13px;font-weight:500}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--sky));display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600}
+.content{padding:32px}
+.hero-banner{background:var(--ink);border-radius:var(--radius-lg);padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;animation:slideIn .5s ease both}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(201,79,58,.25),transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(27,108,168,.20),transparent 50%),radial-gradient(ellipse at 60% 0%,rgba(45,122,94,.15),transparent 50%);pointer-events:none}
+.hero-pattern{position:absolute;bottom:0;left:0;right:0;height:80px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 80'%3E%3Cpolygon points='0,80 80,20 160,55 280,5 380,40 500,0 600,35 720,10 800,45 800,80' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") bottom/cover no-repeat;pointer-events:none}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.hero-title{font-family:var(--font-display);font-size:28px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:10px}
+.hero-title em{color:var(--clay-dim);font-style:normal}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.55);line-height:1.6;max-width:480px}
+.hero-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn-primary{padding:10px 20px;background:var(--clay);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--clay-dim);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,79,58,.35)}
+.btn-outline{padding:10px 20px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:10px;font-size:14px;font-weight:500;transition:all .2s}
+.btn-outline:hover{background:rgba(255,255,255,.14)}
+.hero-stats{display:flex;flex-direction:column;gap:10px;flex-shrink:0;z-index:1}
+.stat-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;text-align:center;min-width:130px;backdrop-filter:blur(10px)}
+.stat-num{font-family:var(--font-display);font-size:28px;font-weight:700;color:#fff;line-height:1}
+.stat-num.clay{color:var(--clay-dim)}.stat-num.gold{color:var(--gold)}.stat-num.sage{color:#6DCFAF}
+.stat-label{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.metric-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;transition:box-shadow .2s}
+.metric-card:hover{box-shadow:var(--shadow)}
+.metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0}
+.mc-clay::before{background:var(--clay)}.mc-sage::before{background:var(--sage)}.mc-sky::before{background:var(--sky)}.mc-gold::before{background:var(--gold)}
+.metric-icon{font-size:22px;margin-bottom:10px}
+.metric-value{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--ink);line-height:1}
+.metric-label{font-size:12px;color:var(--ink-light);margin-top:4px;font-weight:500}
+.metric-trend{font-size:11px;margin-top:8px;display:flex;align-items:center;gap:4px}
+.trend-up{color:var(--sage)}.trend-down{color:var(--clay)}
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:28px}
+.card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.card-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-family:var(--font-display);font-size:15px;font-weight:700}
+.card-action{font-size:12px;color:var(--sky);font-weight:500;cursor:pointer}
+.feed-item{display:flex;gap:14px;padding:16px 22px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer}
+.feed-item:last-child{border-bottom:none}
+.feed-item:hover{background:var(--cream)}
+.feed-avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
+.fa-water{background:#EBF4FB}.fa-road{background:#FEF3E6}.fa-health{background:#EEFAF4}.fa-power{background:#FBF7E6}.fa-edu{background:#F3EEFB}
+.feed-body{flex:1;min-width:0}
+.feed-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:3px}
+.feed-title{font-size:14px;font-weight:600;color:var(--ink);line-height:1.3}
+.feed-time{font-size:11px;color:rgba(13,27,42,.35);white-space:nowrap;font-family:var(--font-mono);flex-shrink:0}
+.feed-desc{font-size:13px;color:var(--ink-light);line-height:1.5;margin-bottom:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.feed-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}
+.tag-pending{background:#FFF0ED;color:#B54020}.tag-progress{background:#EBF5FF;color:#1B5E99}.tag-resolved{background:#EDFAF4;color:#1B6A44}.tag-district{background:rgba(13,27,42,.05);color:var(--ink-light)}
+.map-placeholder{width:100%;height:340px;position:relative;background:linear-gradient(160deg,#D8EBD8,#C5DDE8,#DDE8D0)}
+.project-pin{position:absolute;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.project-pin:hover{transform:rotate(-45deg) scale(1.2)}
+.project-pin span{transform:rotate(45deg);font-size:12px}
+.pin-road{background:var(--gold)}.pin-water{background:var(--sky)}.pin-clinic{background:var(--sage)}.pin-school{background:#9B59B6}
+.map-label{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.95);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px}
+.map-dot{width:8px;height:8px;border-radius:50%}
+.map-legend{position:absolute;bottom:12px;right:12px;background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:11px}
+.legend-item{display:flex;align-items:center;gap:8px;margin-bottom:5px;color:var(--ink-light)}
+.legend-item:last-child{margin-bottom:0}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.progress-bar{height:4px;background:rgba(13,27,42,.06);border-radius:2px;overflow:hidden;margin-top:10px}
+.progress-fill{height:100%;border-radius:2px}
+.pf-sage{background:var(--sage)}.pf-sky{background:var(--sky)}.pf-clay{background:var(--clay)}.pf-gold{background:var(--gold)}
+.yswd-section,.consult-section,.report-section{margin-bottom:28px}
+.yswd-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{font-family:var(--font-display);font-size:18px;font-weight:700}
+.section-subtitle{font-size:13px;color:var(--ink-light);margin-top:2px}
+.yswd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.yswd-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .2s;cursor:pointer}
+.yswd-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.yswd-top{padding:16px 18px 12px;border-bottom:1px solid var(--border)}
+.yswd-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.yswd-badge::before{content:'✓';background:var(--sage);color:#fff;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px}
+.yswd-said{font-size:13px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:6px}
+.yswd-said-label,.yswd-did-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.yswd-said-label{color:var(--clay)}.yswd-did-label{color:var(--sage)}
+.yswd-bottom{padding:12px 18px;background:#F7FCFA}
+.yswd-did{font-size:12px;color:var(--ink-light);line-height:1.5}
+.yswd-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.yswd-ministry{font-size:10px;color:rgba(13,27,42,.4);font-weight:500}
+.yswd-date{font-size:10px;color:rgba(13,27,42,.35);font-family:var(--font-mono)}
+.report-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.report-header{background:var(--ink);padding:24px 28px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden}
+.report-header-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(201,79,58,.3),transparent 60%)}
+.report-header-icon{font-size:32px;z-index:1}
+.report-header-text{z-index:1}
+.report-header-title{font-family:var(--font-display);font-size:18px;color:#fff;font-weight:700}
+.report-header-sub{font-size:13px;color:rgba(255,255,255,.5);margin-top:2px}
+.report-form{padding:24px 28px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:.02em}
+.form-label span{color:var(--clay)}
+.form-input,.form-select,.form-textarea{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font-body);color:var(--ink);background:var(--cream);transition:border-color .15s,box-shadow .15s;outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(27,108,168,.12);background:#fff}
+.form-textarea{resize:vertical;min-height:90px}
+.ussd-hint{background:linear-gradient(135deg,#F0FAF6,#EBF5FF);border:1px solid rgba(45,122,94,.2);border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.ussd-code{font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--sage);background:#fff;border:1.5px solid rgba(45,122,94,.3);border-radius:8px;padding:6px 14px;white-space:nowrap;flex-shrink:0}
+.ussd-text{font-size:13px;color:var(--ink-light);line-height:1.5}
+.ussd-text strong{color:var(--ink)}
+.form-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-submit{padding:12px 28px;background:var(--clay);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:var(--font-body);transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-submit:hover{background:var(--clay-dim);transform:translateY(-1px);box-shadow:0 6px 24px rgba(201,79,58,.3)}
+.btn-secondary-sm{padding:12px 20px;background:transparent;color:var(--ink-light);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font-body);font-weight:500;transition:all .15s}
+.btn-secondary-sm:hover{border-color:var(--ink);color:var(--ink)}
+.anon-note{font-size:12px;color:rgba(13,27,42,.4);display:flex;align-items:center;gap:6px}
+.consult-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.consult-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .2s;cursor:pointer}
+.consult-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.consult-top{height:8px}
+.ct-clay{background:var(--clay)}.ct-sage{background:var(--sage)}.ct-sky{background:var(--sky)}.ct-gold{background:var(--gold)}
+.consult-body{padding:18px 20px}
+.consult-status{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.cs-open{color:var(--sage)}.cs-closing{color:var(--gold)}
+.status-pulse{width:7px;height:7px;border-radius:50%;animation:pulse 2s infinite}
+.sp-green{background:var(--sage)}.sp-gold{background:var(--gold)}
+.consult-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.35}
+.consult-desc{font-size:12px;color:var(--ink-light);line-height:1.55;margin-bottom:14px}
+.consult-footer{display:flex;align-items:center;justify-content:space-between}
+.responses-count{font-size:12px;color:var(--ink-light);display:flex;align-items:center;gap:6px}
+.rc-num{font-weight:700;color:var(--ink);font-family:var(--font-mono)}
+.days-left{font-size:11px;background:var(--cream);border-radius:6px;padding:3px 8px;font-weight:500;color:var(--ink-light)}
+@keyframes slideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hero-banner{animation:slideIn .5s ease both}
+.metrics-row .metric-card:nth-child(1){animation:slideIn .4s .1s ease both}
+.metrics-row .metric-card:nth-child(2){animation:slideIn .4s .2s ease both}
+.metrics-row .metric-card:nth-child(3){animation:slideIn .4s .3s ease both}
+.metrics-row .metric-card:nth-child(4){animation:slideIn .4s .4s ease both}
+.modal-overlay{position:fixed;inset:0;background:rgba(13,27,42,.55);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:var(--radius-lg);padding:32px;max-width:460px;width:100%;box-shadow:var(--shadow-lg);animation:slideIn .25s ease both}
+.modal-icon{font-size:40px;margin-bottom:12px}
+.modal-title{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:8px}
+.modal-body{font-size:14px;color:var(--ink-light);line-height:1.6;margin-bottom:20px}
+.case-ref{font-family:var(--font-mono);font-size:18px;font-weight:500;color:var(--sage);background:#F0FAF5;border:1.5px solid rgba(45,122,94,.25);border-radius:8px;padding:10px 18px;text-align:center;margin-bottom:20px;letter-spacing:.06em}
+.modal-close{width:100%;padding:12px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:var(--font-body);cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark"><div class="brand-icon">📡</div><div class="brand-name">Citizen Signal<br>Network</div></div>
+    <div class="brand-tagline">Lesotho · Prototype v0.1</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <button class="nav-item active" onclick="setActive(this)"><span class="nav-icon">🏠</span> Dashboard</button>
+    <button class="nav-item" onclick="setActive(this)"><span class="nav-icon">📨</span> Submit a Report <span class="nav-badge">New</span></button>
+    <button class="nav-item" onclick="setActive(this)"><span class="nav-icon">🗺️</span> Project Map</button>
+    <button class="nav-item" onclick="setActive(this)"><span class="nav-icon">📋</span> Consultations <span class="nav-badge">4</span></button>
+    <div class="nav-section-label">Transparency</div>
+    <button class="nav-item" onclick="setActive(this)"><span class="nav-icon">🔁</span> You Said – We Did</button>
+    <button class="nav-item" onclick="setActive(this)"><span class="nav-icon">📊</span> Track My Report</button>
+    <div class="nav-section-label">Account</div>
+    <button class="nav-item" onclick="setActive(this)"><span class="nav-icon">👤</span> My Profile</button>
+    <button class="nav-item" onclick="setActive(this)"><span class="nav-icon">⚙️</span> Settings</button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="offline-badge"><span class="offline-dot"></span> Offline-Ready (PWA)</div>
+    <div>USSD: <strong style="color:rgba(255,255,255,.7)">*555*1#</strong></div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px"><div class="page-title">Dashboard</div></div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="language-toggle"><button class="lang-btn active">English</button><button class="lang-btn">Sesotho</button></div>
+      <button class="notif-btn">🔔<span class="notif-dot"></span></button>
+      <div class="user-pill"><div class="user-avatar">MQ</div>Mosala Q.</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="hero-banner">
+      <div class="hero-bg"></div><div class="hero-pattern"></div>
+      <div style="position:relative;z-index:1">
+        <div class="hero-eyebrow">🇱🇸 Lesotho · Active Platform</div>
+        <div class="hero-title">Your voice reaches<br><em>the right desk.</em></div>
+        <div class="hero-sub">Report service issues, track government projects near you, and see what action your feedback produced.</div>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="document.getElementById('rS').scrollIntoView({behavior:'smooth'})">📨 Submit a Report</button>
+          <button class="btn-outline">🗺️ View Project Map</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card"><div class="stat-num clay">1,247</div><div class="stat-label">Reports Submitted</div></div>
+        <div class="stat-card"><div class="stat-num gold">73%</div><div class="stat-label">Response Rate</div></div>
+        <div class="stat-card"><div class="stat-num sage">389</div><div class="stat-label">Issues Resolved</div></div>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-card mc-clay"><div class="metric-icon">📨</div><div class="metric-value">1,247</div><div class="metric-label">Reports This Month</div><div class="metric-trend trend-up">↑ 18% from last month</div></div>
+      <div class="metric-card mc-sage"><div class="metric-icon">✅</div><div class="metric-value">389</div><div class="metric-label">Issues Resolved</div><div class="metric-trend trend-up">↑ 12% resolution rate</div></div>
+      <div class="metric-card mc-sky"><div class="metric-icon">🗺️</div><div class="metric-value">58</div><div class="metric-label">Active Projects Tracked</div><div class="metric-trend trend-up">Across 10 districts</div></div>
+      <div class="metric-card mc-gold"><div class="metric-icon">💬</div><div class="metric-value">4</div><div class="metric-label">Open Consultations</div><div class="metric-trend">2 closing this week</div></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Recent Citizen Reports</div><span class="card-action">View all →</span></div>
+        <div>
+          <div class="feed-item"><div class="feed-avatar fa-water">💧</div><div class="feed-body"><div class="feed-top"><div class="feed-title">No water — Ha Abia standpipe dry for 6 days</div><div class="feed-time">2h ago</div></div><div class="feed-desc">Community standpipe non-functional since Tuesday. Elderly residents unable to access water.</div><div class="feed-meta"><span class="tag tag-progress">🔵 In Progress</span><span class="tag tag-district">Maseru</span><span style="font-size:11px;color:rgba(13,27,42,.35);font-family:var(--font-mono)">REF-2026-0891</span></div></div></div>
+          <div class="feed-item"><div class="feed-avatar fa-road">🛣️</div><div class="feed-body"><div class="feed-top"><div class="feed-title">Road collapse on A3 near Maputsoe junction</div><div class="feed-time">5h ago</div></div><div class="feed-desc">Large collapse risk. Trucks diverting through residential streets.</div><div class="feed-meta"><span class="tag tag-pending">🔴 Pending</span><span class="tag tag-district">Leribe</span><span style="font-size:11px;color:rgba(13,27,42,.35);font-family:var(--font-mono)">REF-2026-0884</span></div></div></div>
+          <div class="feed-item"><div class="feed-avatar fa-health">🏥</div><div class="feed-body"><div class="feed-top"><div class="feed-title">Ha Sofonia clinic out of ARV stock</div><div class="feed-time">Yesterday</div></div><div class="feed-desc">Clinic without ARVs for 11 days. Patients travelling to QMMH.</div><div class="feed-meta"><span class="tag tag-progress">🔵 Escalated</span><span class="tag tag-district">Maseru</span><span style="font-size:11px;color:rgba(13,27,42,.35);font-family:var(--font-mono)">REF-2026-0872</span></div></div></div>
+          <div class="feed-item"><div class="feed-avatar fa-power">⚡</div><div class="feed-body"><div class="feed-top"><div class="feed-title">Power outage — Butha-Buthe central, 3 days</div><div class="feed-time">2 days ago</div></div><div class="feed-desc">Entire CBD without power. Businesses losing stock.</div><div class="feed-meta"><span class="tag tag-resolved">✅ Resolved</span><span class="tag tag-district">Butha-Buthe</span><span style="font-size:11px;color:rgba(13,27,42,.35);font-family:var(--font-mono)">REF-2026-0861</span></div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Public Project Monitor</div><span class="card-action">Full map →</span></div>
+        <div class="map-placeholder">
+          <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;opacity:.35"><path d="M60,120 L80,80 L120,55 L165,50 L210,60 L240,90 L248,130 L240,165 L210,195 L170,210 L130,205 L90,185 L65,155 Z" fill="#2D7A5E" stroke="#1B6A44" stroke-width="2"/></svg>
+          <div class="project-pin pin-water" style="top:42%;left:38%"><span>💧</span></div>
+          <div class="project-pin pin-road" style="top:30%;left:55%"><span>🛣️</span></div>
+          <div class="project-pin pin-clinic" style="top:55%;left:48%"><span>🏥</span></div>
+          <div class="project-pin pin-school" style="top:65%;left:62%"><span>🏫</span></div>
+          <div class="project-pin pin-road" style="top:20%;left:43%"><span>🛣️</span></div>
+          <div class="map-label"><span class="map-dot" style="background:var(--sage)"></span>Lesotho · 58 Active Projects</div>
+          <div class="map-legend">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--sky)"></span>Water</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span>Roads</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--sage)"></span>Health</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#9B59B6"></span>Education</div>
+          </div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-light);margin-bottom:12px">Featured Projects</div>
+          <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600">Maseru Water Treatment Plant</span><span style="font-size:12px;color:var(--sky);font-family:var(--font-mono)">67%</span></div><div class="progress-bar"><div class="progress-fill pf-sky" style="width:67%"></div></div><div style="font-size:11px;color:var(--ink-light);margin-top:4px">Budget: M 12.4M · Due: Aug 2026</div></div>
+          <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600">A1 Road Rehabilitation (Leribe)</span><span style="font-size:12px;color:var(--gold);font-family:var(--font-mono)">34%</span></div><div class="progress-bar"><div class="progress-fill pf-gold" style="width:34%"></div></div><div style="font-size:11px;color:var(--ink-light);margin-top:4px">Budget: M 8.9M · Due: Nov 2026</div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600">Mafeteng Rural Health Clinics ×3</span><span style="font-size:12px;color:var(--sage);font-family:var(--font-mono)">89%</span></div><div class="progress-bar"><div class="progress-fill pf-sage" style="width:89%"></div></div><div style="font-size:11px;color:var(--ink-light);margin-top:4px">Budget: M 5.2M · Due: Jun 2026</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="yswd-section">
+      <div class="yswd-header"><div><div class="section-title">You Said — We Did</div><div class="section-subtitle">Documented government responses to citizen feedback.</div></div><span class="card-action" style="color:var(--sky);font-weight:500;cursor:pointer">View all →</span></div>
+      <div class="yswd-grid">
+        <div class="yswd-card"><div class="yswd-top"><div class="yswd-badge">Action Taken</div><div class="yswd-said-label">You Said</div><div class="yswd-said">"The Qhoali road becomes impassable during rains. Our children cannot reach school."</div></div><div class="yswd-bottom"><div class="yswd-did-label">We Did</div><div class="yswd-did">Ministry of Public Works deployed a grading team. Road resurfaced for 4.2km. Drainage channels installed.</div><div class="yswd-footer"><div class="yswd-ministry">Ministry of Public Works</div><div class="yswd-date">Apr 2026</div></div></div></div>
+        <div class="yswd-card"><div class="yswd-top"><div class="yswd-badge">Action Taken</div><div class="yswd-said-label">You Said</div><div class="yswd-said">"Thamae clinic is only open two days a week. Patients travel to Maseru for basic care."</div></div><div class="yswd-bottom"><div class="yswd-did-label">We Did</div><div class="yswd-did">MoH allocated an additional nurse post. Clinic now open 5 days. Outreach extended to two satellite points.</div><div class="yswd-footer"><div class="yswd-ministry">Ministry of Health</div><div class="yswd-date">Mar 2026</div></div></div></div>
+        <div class="yswd-card"><div class="yswd-top"><div class="yswd-badge">Action Taken</div><div class="yswd-said-label">You Said</div><div class="yswd-said">"Water tariff increases were not explained. We were not consulted before the decision."</div></div><div class="yswd-bottom"><div class="yswd-did-label">We Did</div><div class="yswd-did">WASA held community info sessions in all 10 districts. Plain-language tariff explanation published in Sesotho and English.</div><div class="yswd-footer"><div class="yswd-ministry">WASA / Ministry of Water</div><div class="yswd-date">May 2026</div></div></div></div>
+      </div>
+    </div>
+    <div class="report-section" id="rS">
+      <div class="report-card">
+        <div class="report-header"><div class="report-header-bg"></div><div class="report-header-icon">📨</div><div class="report-header-text"><div class="report-header-title">Submit a Service Report</div><div class="report-header-sub">Every report gets a case reference and a tracked response.</div></div></div>
+        <div class="report-form">
+          <div class="ussd-hint"><div class="ussd-code">*555*1#</div><div class="ussd-text"><strong>No smartphone?</strong> Dial this USSD code from any basic phone — no internet needed.</div></div>
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Category <span>*</span></label><select class="form-select"><option>Select a category...</option><option>Water &amp; Sanitation</option><option>Roads &amp; Transport</option><option>Health Services</option><option>Electricity &amp; Power</option><option>Education</option><option>Social Services</option></select></div>
+            <div class="form-group"><label class="form-label">District <span>*</span></label><select class="form-select"><option>Select district...</option><option>Maseru</option><option>Berea</option><option>Leribe</option><option>Butha-Buthe</option><option>Mafeteng</option><option>Mohale's Hoek</option><option>Quthing</option><option>Qacha's Nek</option><option>Mokhotlong</option><option>Thaba-Tseka</option></select></div>
+            <div class="form-group full"><label class="form-label">Issue Title <span>*</span></label><input type="text" class="form-input" placeholder="e.g. Broken water pump at Ha Matela standpipe" id="issueTitle"></div>
+            <div class="form-group full"><label class="form-label">Description <span>*</span></label><textarea class="form-textarea" placeholder="Describe the problem in detail. Who is affected? How long has it been happening?" id="issueDesc"></textarea></div>
+            <div class="form-group"><label class="form-label">Your Name</label><input type="text" class="form-input" placeholder="Optional — can remain anonymous"></div>
+            <div class="form-group"><label class="form-label">Contact (for updates)</label><input type="text" class="form-input" placeholder="Phone or email — optional"></div>
+          </div>
+          <div class="form-actions"><button class="btn-submit" onclick="submitReport()">📨 Submit Report</button><button class="btn-secondary-sm">📎 Attach Photo</button><span class="anon-note">🔒 You can submit anonymously.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="consult-section">
+      <div class="yswd-header"><div><div class="section-title">Open Consultations</div><div class="section-subtitle">Your input shapes policy and legislation.</div></div><span class="card-action" style="color:var(--sky);cursor:pointer">All consultations →</span></div>
+      <div class="consult-grid">
+        <div class="consult-card"><div class="consult-top ct-sage"></div><div class="consult-body"><div class="consult-status cs-open"><span class="status-pulse sp-green"></span>Open for Comment</div><div class="consult-title">Draft National Land Policy 2026</div><div class="consult-desc">Ministry of Forestry seeking public input on land tenure, customary rights, urban allocation, and inheritance provisions.</div><div class="consult-footer"><div class="responses-count">💬 <span class="rc-num">312</span> responses</div><div class="days-left">18 days left</div></div><div class="progress-bar"><div class="progress-fill pf-sage" style="width:55%"></div></div></div></div>
+        <div class="consult-card"><div class="consult-top ct-sky"></div><div class="consult-body"><div class="consult-status cs-open"><span class="status-pulse sp-green"></span>Open for Comment</div><div class="consult-title">Water Tariff Review 2026–2027</div><div class="consult-desc">WASA consulting on proposed household and commercial water tariff adjustments with block tariff proposals.</div><div class="consult-footer"><div class="responses-count">💬 <span class="rc-num">187</span> responses</div><div class="days-left">21 days left</div></div><div class="progress-bar"><div class="progress-fill pf-sky" style="width:38%"></div></div></div></div>
+        <div class="consult-card"><div class="consult-top ct-gold"></div><div class="consult-body"><div class="consult-status cs-closing"><span class="status-pulse sp-gold"></span>Closing Soon</div><div class="consult-title">Education Sector Improvement Plan</div><div class="consult-desc">MoET gathering views on curriculum reform, teacher deployment in highlands, and revised national qualifications.</div><div class="consult-footer"><div class="responses-count">💬 <span class="rc-num">524</span> responses</div><div class="days-left">4 days left</div></div><div class="progress-bar"><div class="progress-fill pf-gold" style="width:82%"></div></div></div></div>
+        <div class="consult-card"><div class="consult-top ct-clay"></div><div class="consult-body"><div class="consult-status cs-closing"><span class="status-pulse sp-gold"></span>Closing Soon</div><div class="consult-title">Digital Economy Strategy 2026–2030</div><div class="consult-desc">Ministry of Communications proposes national strategy for digital infrastructure, e-government, and skills development.</div><div class="consult-footer"><div class="responses-count">💬 <span class="rc-num">94</span> responses</div><div class="days-left">6 days left</div></div><div class="progress-bar"><div class="progress-fill pf-clay" style="width:71%"></div></div></div></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<div class="modal-overlay" id="successModal">
+  <div class="modal"><div class="modal-icon">✅</div><div class="modal-title">Report Submitted Successfully</div><div class="modal-body">Your report has been received and assigned to the relevant district office. Keep your case reference — track progress here or dial <strong>*555*2#</strong>.</div><div class="case-ref" id="caseRef">REF-2026-0000</div><button class="modal-close" onclick="closeModal()">Back to Dashboard</button></div>
+</div>
+<script>
+function setActive(el){document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));el.classList.add('active')}
+function submitReport(){const r='REF-2026-'+String(Math.floor(Math.random()*900)+100).padStart(4,'0');document.getElementById('caseRef').textContent=r;document.getElementById('successModal').classList.add('open')}
+function closeModal(){document.getElementById('successModal').classList.remove('open')}
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',function(){document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));this.classList.add('active')}))
+</script>
+</body>
+</html>
